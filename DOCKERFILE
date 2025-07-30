@@ -1,16 +1,23 @@
 FROM node:18-alpine
 
-WORKDIR /app
+# Install build tools for sqlite3
+RUN apk add --no-cache make gcc g++ python3
 
+# Set working dir to backend
+WORKDIR /app/backend
+
+# Install dependencies
 COPY backend/package*.json ./
 RUN npm install
 
-COPY backend ./backend
+# Copy backend source
+COPY backend/ ./
+
+# Copy frontend
+WORKDIR /app
 COPY frontend ./frontend
 
+# Run server
 WORKDIR /app/backend
-
-ENV PORT=5000
 EXPOSE 5000
-
 CMD ["node", "index.js"]
