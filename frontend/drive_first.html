@@ -210,32 +210,32 @@
                 default: return `📁`; // Default icon for unknown file types
             }
         }
+async function loadFiles() {
+    const res = await fetch(`${SERVER}/dbfiles`);
+    const files = await res.json();
 
-        async function loadFiles() {
-            const res = await fetch(`${SERVER}/files`);
-            const files = await res.json();
+    const fileList = document.getElementById('fileList');
+    fileList.innerHTML = '';
 
-            const fileList = document.getElementById('fileList');
-            fileList.innerHTML = '';
+    files.forEach(file => {
+        const item = document.createElement('div');
+        item.className = 'upload_item';
 
-            files.forEach(file => {
-                const item = document.createElement('div');
-                item.className = 'upload_item';
+        const iconPath = getFileIcon(file.name);
 
-                const iconPath = getFileIcon(file);
+        item.innerHTML = `
+            <span style="font-size: 24px; margin-right: 8px;">${iconPath}</span>
+            <span>${file.name}</span>
+            <div>
+                <a href="${SERVER}/uploads/${file.name}" target="_blank">Open</a> |
+                <a href="${SERVER}/download/${file.name}">Download</a>
+            </div>
+        `;
 
-                item.innerHTML = `
-  <span style="font-size: 24px; margin-right: 8px;">${iconPath}</span>
-  <span>${file}</span>
-  <div>
-    <a href="${SERVER}/files/${file}" target="_blank">Open</a> |
-    <a href="${SERVER}/download/${file}">Download</a>
-  </div>
-`;
+        fileList.appendChild(item);
+    });
+}
 
-                fileList.appendChild(item);
-            });
-        }
 
         // Load files on page load
         window.onload = () => {
