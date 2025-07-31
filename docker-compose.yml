@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: file-drive-backend
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    env_file:
+      - ./backend/.env
+    working_dir: /app/backend
+    command: npm start

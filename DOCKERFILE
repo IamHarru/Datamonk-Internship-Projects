@@ -6,18 +6,18 @@ RUN apk add --no-cache make gcc g++ python3
 # Set working dir to backend
 WORKDIR /app/backend
 
-# Install dependencies
-COPY backend/package*.json ./
+# Copy backend package files and install dependencies
+COPY backend/ ./
 RUN npm install
 
-# Copy backend source
-COPY backend/ ./
+# Copy backend source AFTER npm install (to avoid cache issues)
 
-# Copy frontend
+# Copy frontend files
 WORKDIR /app
 COPY frontend ./frontend
 
-# Run server
+# Set working directory back to backend for execution
 WORKDIR /app/backend
+
 EXPOSE 5000
 CMD ["node", "index.js"]
