@@ -1,8 +1,6 @@
-FROM node:18-alpine
-
+FROM node:18
 # Install build tools for sqlite3
-RUN apk add --no-cache make gcc g++ python3
-
+RUN apt-get update && apt-get install -y make gcc g++ python3 && rm -rf /var/lib/apt/lists/*
 # Set working dir to backend
 WORKDIR /app/backend
 
